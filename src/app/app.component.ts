@@ -14,12 +14,12 @@ export class AppComponent {
 
   constructor(
     private _eventsLoaderService: EventsLoaderService,
-    private _eventsService: EventsService
+    private _eventsService: EventsService,
   ) {
     this.eventsByTypes$ = this._eventsLoaderService
       .loadEvents()
       .pipe(
-        map((events) => this._eventsService.groupEventsByKnownName(events))
+        map((events) => this._eventsService.groupEventsByKnownName(events)),
       );
   }
 }

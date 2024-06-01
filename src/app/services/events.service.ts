@@ -23,7 +23,7 @@ export class EventsService {
         start: [],
         interaction: [],
         shop_click: [],
-      } as DataRecordsByKnownNames
+      } as DataRecordsByKnownNames,
     );
   }
 }
