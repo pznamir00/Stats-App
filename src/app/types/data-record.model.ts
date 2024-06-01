@@ -1,3 +1,4 @@
+import { DataRecordKnownName } from "./data-record-known-name.enum";
 import { Platform } from "./platform.enum";
 
 export interface DataRecord {
@@ -6,3 +7,7 @@ export interface DataRecord {
   version: string;
   count: number;
 }
+
+export type DataRecordsByKnownNames = {
+  [key in DataRecordKnownName]: DataRecord[];
+};

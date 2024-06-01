@@ -1,5 +1,8 @@
 import { Component } from "@angular/core";
 import { EventsLoaderService } from "./services/events-loader.service";
+import { DataRecordsByKnownNames } from "./types/data-record.model";
+import { EventsService } from "./services/events.service";
+import { Observable, map } from "rxjs";
 
 @Component({
   selector: "app-root",
@@ -7,13 +10,16 @@ import { EventsLoaderService } from "./services/events-loader.service";
   styleUrls: ["./app.component.scss"],
 })
 export class AppComponent {
-  title = "stats-page";
+  eventsByTypes$: Observable<DataRecordsByKnownNames>;
 
-  constructor(private _eventsLoaderService: EventsLoaderService) {}
-
-  ngOnInit(): void {
-    this._eventsLoaderService.loadEvents().subscribe((data) => {
-      //
-    });
+  constructor(
+    private _eventsLoaderService: EventsLoaderService,
+    private _eventsService: EventsService
+  ) {
+    this.eventsByTypes$ = this._eventsLoaderService
+      .loadEvents()
+      .pipe(
+        map((events) => this._eventsService.groupEventsByKnownName(events))
+      );
   }
 }
