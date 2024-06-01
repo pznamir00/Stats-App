@@ -1,22 +1,25 @@
 import { TestBed } from "@angular/core/testing";
 import { AppComponent } from "./app.component";
+import { render } from "@testing-library/angular";
+import { MockProvider } from "ng-mocks";
+import { EventsLoaderService } from "./services/events-loader.service";
+import { of } from "rxjs";
 
 describe("AppComponent", () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [AppComponent],
-    }).compileComponents();
-  });
-
-  it("should create the app", () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
-
-  it(`should have as title 'stats-page'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual("stats-page");
+  it("loads events data on init", async () => {
+    await setup();
+    const eventsLoaderService = TestBed.inject(EventsLoaderService);
+    expect(eventsLoaderService.loadEvents).toHaveBeenCalled();
   });
 });
+
+const setup = async () => {
+  const fixture = await render(AppComponent, {
+    providers: [
+      MockProvider(EventsLoaderService, {
+        loadEvents: jest.fn(() => of([])),
+      }),
+    ],
+  });
+  return { fixture };
+};

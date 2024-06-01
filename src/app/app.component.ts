@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { EventsLoaderService } from "./services/events-loader.service";
 
 @Component({
   selector: "app-root",
@@ -7,4 +8,12 @@ import { Component } from "@angular/core";
 })
 export class AppComponent {
   title = "stats-page";
+
+  constructor(private _eventsLoaderService: EventsLoaderService) {}
+
+  ngOnInit(): void {
+    this._eventsLoaderService.loadEvents().subscribe((data) => {
+      //
+    });
+  }
 }
