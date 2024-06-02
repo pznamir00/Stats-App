@@ -11,19 +11,15 @@ describe("FiltersComponent", () => {
   });
 
   it("marks default button as provided", async () => {
-    const { fixture } = await setup();
-    const versionInput = fixture.container.querySelector(
-      'input[value="version"]',
-    );
+    await setup();
+    const versionInput = screen.getByTestId("version-input");
     //@ts-ignore
     expect(versionInput?.checked).toBeTruthy();
   });
 
   it("emits propertyChanged on change", async () => {
-    const { fixture, changedEmit } = await setup();
-    const platformInput = fixture.container.querySelector(
-      'input[value="platform"]',
-    );
+    const { changedEmit } = await setup();
+    const platformInput = screen.getByTestId("platform-input");
     fireEvent.click(platformInput!);
     expect(changedEmit).toHaveBeenCalledWith("platform");
   });

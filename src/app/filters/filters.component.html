@@ -9,6 +9,7 @@
           type="radio"
           name="grouping-property"
           class="container__group__input_container__input"
+          [attr.data-testId]="property + '-input'"
           [value]="property"
           [checked]="property === selectedGroupingProperty"
         />
