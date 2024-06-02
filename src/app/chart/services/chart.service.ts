@@ -1,7 +1,9 @@
 import { Injectable } from "@angular/core";
-import groupArray from "group-array";
 import { EventsService } from "src/app/services/events.service";
-import { EventRecordsByDistinctNames } from "src/app/types/event.model";
+import {
+  EventRecord,
+  EventRecordsByDistinctNames,
+} from "src/app/types/event.model";
 import { ChartDataRow } from "../types/chart-data-row.model";
 import { EventsByDistinctGroupingPropertiesAndNames } from "../types/events-by-distinct-names-and-grouping-properties.model";
 import { EventDistinctName as Names } from "../../types/event-distinct-name.enum";
@@ -10,9 +12,9 @@ import { EventDistinctName as Names } from "../../types/event-distinct-name.enum
 export class ChartService {
   constructor(private _eventsService: EventsService) {}
 
-  calculateDataFromEvents(
+  calculateChartDataFromEvents(
     events: EventRecordsByDistinctNames,
-    groupingProp: string,
+    groupingProp: keyof EventRecord,
   ): ChartDataRow[] {
     const eventsDataFrame = this._createEventsDataFrame(events, groupingProp);
     this._populateMissingPropertiesForEachEventsGroup(eventsDataFrame);
@@ -36,7 +38,7 @@ export class ChartService {
 
   private _createEventsDataFrame(
     events: EventRecordsByDistinctNames,
-    groupingProp: string,
+    groupingProp: keyof EventRecord,
   ) {
     /**
      * group events by:
@@ -48,7 +50,7 @@ export class ChartService {
     ).reduce<EventsByDistinctGroupingPropertiesAndNames>(
       (acc, [key, arr]) => ({
         ...acc,
-        [key]: groupArray(arr, groupingProp),
+        [key]: this._groupEventsByKey(arr, groupingProp),
       }),
       {},
     );
@@ -67,5 +69,16 @@ export class ChartService {
         }
       }
     }
+  }
+
+  private _groupEventsByKey(events: EventRecord[], key: keyof EventRecord) {
+    return events.reduce<{ [key: string]: EventRecord[] }>((groups, event) => {
+      if (event[key] in groups) {
+        groups[event[key]].push(event);
+      } else {
+        groups[event[key]] = [event];
+      }
+      return groups;
+    }, {});
   }
 }

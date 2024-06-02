@@ -30,7 +30,7 @@ export class ChartComponent implements OnChanges {
 
   ngOnChanges(): void {
     if (this.eventsByDistinctNames && this.groupingProperty) {
-      this.data = this._chartService.calculateDataFromEvents(
+      this.data = this._chartService.calculateChartDataFromEvents(
         this.eventsByDistinctNames,
         this.groupingProperty,
       );
