@@ -1,9 +1,6 @@
 import { Injectable } from "@angular/core";
-import {
-  DataRecord,
-  DataRecordsByKnownNames,
-} from "../types/data-record.model";
-import { DataRecordKnownName } from "../types/data-record-known-name.enum";
+import { EventRecord, EventRecordsByDistinctNames } from "../types/event.model";
+import { EventDistinctName } from "../types/event-distinct-name.enum";
 
 @Injectable({
   providedIn: "root",
@@ -11,11 +8,17 @@ import { DataRecordKnownName } from "../types/data-record-known-name.enum";
 export class EventsService {
   constructor() {}
 
-  groupEventsByKnownName(events: DataRecord[]): DataRecordsByKnownNames {
-    return events.reduce<DataRecordsByKnownNames>(
+  countEventsFromArray(events: EventRecord[]) {
+    return events.reduce((total, event) => total + event.count, 0);
+  }
+
+  groupEventsByDistinctName(
+    events: EventRecord[],
+  ): EventRecordsByDistinctNames {
+    return events.reduce<EventRecordsByDistinctNames>(
       (groups, event) => {
         if (event.name in groups) {
-          groups[event.name as DataRecordKnownName].push(event);
+          groups[event.name as EventDistinctName].push(event);
         }
         return groups;
       },
@@ -23,7 +26,7 @@ export class EventsService {
         start: [],
         interaction: [],
         shop_click: [],
-      } as DataRecordsByKnownNames,
+      } as EventRecordsByDistinctNames,
     );
   }
 }
