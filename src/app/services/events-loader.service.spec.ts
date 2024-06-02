@@ -1,9 +1,5 @@
 import { TestBed } from "@angular/core/testing";
 import { EventsLoaderService } from "./events-loader.service";
-import {
-  HttpClientTestingModule,
-  HttpTestingController,
-} from "@angular/common/http/testing";
 import { HttpClient } from "@angular/common/http";
 import { MockProvider } from "ng-mocks";
 import { of } from "rxjs";
