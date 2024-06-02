@@ -5,7 +5,7 @@
       <nb-card-body>
         <nb-layout-column>
           <app-chart
-            [eventsByDistinctNames]="eventsByDistinctNames$ | async"
+            [events]="(events$ | async) || []"
             [groupingProperty]="groupingProperty"
           ></app-chart
         ></nb-layout-column>

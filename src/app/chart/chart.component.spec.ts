@@ -13,7 +13,7 @@ describe("ChartComponent", () => {
   it("calculates default data", async () => {
     const { fixture } = await setup();
     expect(fixture.fixture.componentInstance.data).toEqual([
-      { data: [2, 2, 0], label: "ios" },
+      { data: [4, 0, 0], label: "ios" },
     ]);
   });
 
@@ -21,7 +21,7 @@ describe("ChartComponent", () => {
     const { fixture } = await setup();
     fixture.change({ groupingProperty: "version" });
     expect(fixture.fixture.componentInstance.data).toEqual([
-      { data: [2, 2, 0], label: "1.44" },
+      { data: [4, 0, 0], label: "1.44" },
     ]);
   });
 });
@@ -29,11 +29,7 @@ describe("ChartComponent", () => {
 const setup = async () => {
   const fixture = await render(ChartComponent, {
     componentProperties: {
-      eventsByDistinctNames: {
-        start: [getEvent()],
-        interaction: [getEvent()],
-        shop_click: [],
-      },
+      events: [getEvent(), getEvent()],
       groupingProperty: "platform",
     },
     schemas: [NO_ERRORS_SCHEMA],

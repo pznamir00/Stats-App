@@ -6,6 +6,7 @@ import { EventsLoaderService } from "./services/events-loader.service";
 import { of } from "rxjs";
 import { FiltersComponent } from "./filters/filters.component";
 import { ChartComponent } from "./chart/chart.component";
+import { NbCardModule, NbLayoutModule, NbThemeModule } from "@nebular/theme";
 
 describe("AppComponent", () => {
   it("loads events data on init", async () => {
@@ -16,6 +17,8 @@ describe("AppComponent", () => {
 });
 
 const setup = async () => {
+  window.scrollTo = jest.fn();
+
   const fixture = await render(AppComponent, {
     providers: [
       MockProvider(EventsLoaderService, {
@@ -26,6 +29,7 @@ const setup = async () => {
       MockComponent(FiltersComponent),
       MockComponent(ChartComponent),
     ],
+    imports: [NbLayoutModule, NbCardModule, NbThemeModule.forRoot()],
   });
   return { fixture };
 };

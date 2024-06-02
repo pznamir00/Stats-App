@@ -1,8 +1,7 @@
 import { Component } from "@angular/core";
 import { EventsLoaderService } from "./services/events-loader.service";
-import { EventRecord, EventRecordsByDistinctNames } from "./types/event.model";
-import { EventsService } from "./services/events.service";
-import { Observable, map } from "rxjs";
+import { EventRecord } from "./types/event.model";
+import { Observable } from "rxjs";
 
 @Component({
   selector: "app-root",
@@ -10,18 +9,11 @@ import { Observable, map } from "rxjs";
   styleUrls: ["./app.component.scss"],
 })
 export class AppComponent {
-  eventsByDistinctNames$: Observable<EventRecordsByDistinctNames>;
+  events$: Observable<EventRecord[]>;
   groupingProperty: keyof EventRecord = "platform";
 
-  constructor(
-    private _eventsLoaderService: EventsLoaderService,
-    private _eventsService: EventsService,
-  ) {
-    this.eventsByDistinctNames$ = this._eventsLoaderService
-      .loadEvents()
-      .pipe(
-        map((events) => this._eventsService.groupEventsByDistinctName(events)),
-      );
+  constructor(private _eventsLoaderService: EventsLoaderService) {
+    this.events$ = this._eventsLoaderService.loadEvents();
   }
 
   onGroupingPropertyChanged(value: keyof EventRecord) {

@@ -17,7 +17,7 @@ import { ChartService } from "./services/chart.service";
   providers: [ChartService],
 })
 export class ChartComponent implements OnChanges {
-  @Input() eventsByDistinctNames?: EventRecordsByDistinctNames | null;
+  @Input() events: EventRecord[] = [];
   @Input() groupingProperty?: keyof EventRecord;
   data: ChartDataRow[] = [];
   labels = [
@@ -29,9 +29,9 @@ export class ChartComponent implements OnChanges {
   constructor(private _chartService: ChartService) {}
 
   ngOnChanges(): void {
-    if (this.eventsByDistinctNames && this.groupingProperty) {
-      this.data = this._chartService.calculateChartDataFromEvents(
-        this.eventsByDistinctNames,
+    if (this.events && this.groupingProperty) {
+      this.data = this._chartService.calculateChartData(
+        this.events,
         this.groupingProperty,
       );
     }
