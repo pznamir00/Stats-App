@@ -1,10 +1,21 @@
-<div>
-  <app-filters
-    [selectedGroupingProperty]="groupingProperty"
-    (propertyChanged)="onGroupingPropertyChanged($event)"
-  ></app-filters>
-  <app-chart
-    [eventsByDistinctNames]="eventsByDistinctNames$ | async"
-    [groupingProperty]="groupingProperty"
-  ></app-chart>
-</div>
+<nb-layout>
+  <nb-layout-column>
+    <nb-card class="main_card">
+      <nb-card-header>Statistics</nb-card-header>
+      <nb-card-body>
+        <nb-layout-column>
+          <app-chart
+            [eventsByDistinctNames]="eventsByDistinctNames$ | async"
+            [groupingProperty]="groupingProperty"
+          ></app-chart
+        ></nb-layout-column>
+      </nb-card-body>
+      <nb-card-footer>
+        <app-filters
+          [selectedGroupingProperty]="groupingProperty"
+          (propertyChanged)="onGroupingPropertyChanged($event)"
+        ></app-filters
+      ></nb-card-footer>
+    </nb-card>
+  </nb-layout-column>
+</nb-layout>

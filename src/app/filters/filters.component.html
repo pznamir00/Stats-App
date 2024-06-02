@@ -1,13 +1,21 @@
 <div>
-  <form (input)="onChange($event)">
-    <div *ngFor="let property of availableGroupingProperties">
-      <input
-        type="radio"
-        name="grouping-property"
-        [value]="property"
-        [checked]="property === selectedGroupingProperty"
-      />
-      <p>{{ property }}</p>
+  <form (input)="onChange($event)" class="container">
+    <div class="container__group">
+      <div
+        *ngFor="let property of availableGroupingProperties"
+        class="container__group__input_container"
+      >
+        <input
+          type="radio"
+          name="grouping-property"
+          class="container__group__input_container__input"
+          [value]="property"
+          [checked]="property === selectedGroupingProperty"
+        />
+        <div class="container__group__input_container__label">
+          <div class="icon">{{ property }}</div>
+        </div>
+      </div>
     </div>
   </form>
 </div>
