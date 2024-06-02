@@ -1,0 +1,13 @@
+<div>
+  <form (input)="onChange($event)">
+    <div *ngFor="let property of availableGroupingProperties">
+      <input
+        type="radio"
+        name="grouping-property"
+        [value]="property"
+        [checked]="property === selectedGroupingProperty"
+      />
+      <p>{{ property }}</p>
+    </div>
+  </form>
+</div>

@@ -1,6 +1,10 @@
 <div>
+  <app-filters
+    [selectedGroupingProperty]="groupingProperty"
+    (propertyChanged)="onGroupingPropertyChanged($event)"
+  ></app-filters>
   <app-chart
     [eventsByDistinctNames]="eventsByDistinctNames$ | async"
-    [groupingProperty]="'platform'"
+    [groupingProperty]="groupingProperty"
   ></app-chart>
 </div>

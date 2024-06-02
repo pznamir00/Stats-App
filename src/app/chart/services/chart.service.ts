@@ -3,7 +3,7 @@ import groupArray from "group-array";
 import { EventsService } from "src/app/services/events.service";
 import { EventRecordsByDistinctNames } from "src/app/types/event.model";
 import { ChartDataRow } from "../types/chart-data-row.model";
-import { EventsByDistinctLabelsAndNames } from "../types/events-by-distinct-names-and-labels.model";
+import { EventsByDistinctGroupingPropertiesAndNames } from "../types/events-by-distinct-names-and-grouping-properties.model";
 import { EventDistinctName as Names } from "../../types/event-distinct-name.enum";
 
 @Injectable()
@@ -15,8 +15,9 @@ export class ChartService {
     groupingProp: string,
   ): ChartDataRow[] {
     const eventsDataFrame = this._createEventsDataFrame(events, groupingProp);
-    const groupedProperties = Object.keys(eventsDataFrame.start!);
+    this._populateMissingPropertiesForEachEventsGroup(eventsDataFrame);
 
+    const groupedProperties = Object.keys(eventsDataFrame.start!);
     return groupedProperties.map((prop) => {
       const startEvents = eventsDataFrame[Names.START]?.[prop]!;
       const interactionEvents = eventsDataFrame[Names.INTERACTION]?.[prop]!;
@@ -42,12 +43,29 @@ export class ChartService {
      * - distinct names (e.g. start, interaction)
      * - distinct grouped property (e.g. for platform: ios, android)
      */
-    return Object.entries(events).reduce<EventsByDistinctLabelsAndNames>(
+    return Object.entries(
+      events,
+    ).reduce<EventsByDistinctGroupingPropertiesAndNames>(
       (acc, [key, arr]) => ({
         ...acc,
         [key]: groupArray(arr, groupingProp),
       }),
       {},
     );
+  }
+
+  private _populateMissingPropertiesForEachEventsGroup(
+    eventsDataFrame: EventsByDistinctGroupingPropertiesAndNames,
+  ) {
+    const allProps = Object.values(eventsDataFrame).map(Object.keys).flat();
+    const distinctProperties = [...new Set(allProps)];
+
+    for (const dfValue of Object.values(eventsDataFrame)) {
+      for (const property of distinctProperties) {
+        if (!(property in dfValue)) {
+          dfValue[property] = [];
+        }
+      }
+    }
   }
 }
