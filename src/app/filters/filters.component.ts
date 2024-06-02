@@ -15,7 +15,7 @@ import { EventRecord } from "../types/event.model";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FiltersComponent {
-  @Input() selectedGroupingProperty?: string;
+  @Input() selectedGroupingProperty?: keyof EventRecord;
   @Output() propertyChanged = new EventEmitter<keyof EventRecord>();
   availableGroupingProperties: (keyof EventRecord)[] = ["platform", "version"];
 
