@@ -10,20 +10,19 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo "Building.."
+                echo "Building..."
                 sh '''
-                cd myapp
-                pip install -r requirements.txt
+                npm install
+                ng build --configuration production
                 '''
             }
         }
         stage('Test') {
             steps {
-                echo "Testing.."
+                echo "Testing..."
                 sh '''
-                cd myapp
-                python3 hello.py
-                python3 hello.py --name=Brad
+                npm run check-formatting
+                npm run test
                 '''
             }
         }
@@ -31,7 +30,7 @@ pipeline {
             steps {
                 echo 'Deliver....'
                 sh '''
-                echo "doing delivery stuff.."
+                echo "Done!"
                 '''
             }
         }
